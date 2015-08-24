@@ -14,9 +14,7 @@ fs.readFile('./data/people.csv', 'utf8', function(err, data) {
   for (var i = 1; i < lines.length-1; i++) {
     csvPeople.push(new Person(lines[i].split(',')));
   }
-  // console.log('csvPeople: \n');
-  // console.log(csvPeople);
-  // console.log(peopleColumnLengths(csvPeople));
+
   var maxes = peopleColumnLengths(csvPeople);
   var pTable = makeTable(csvPeople, maxes, 'people');
 
@@ -34,9 +32,7 @@ fs.readFile('./data/companies.csv', 'utf8', function(err, data) {
   for (var i = 1; i < lines.length-1; i++) {
     csvCompanies.push(new Company(lines[i].split(',')));
   }
-  // console.log('\ncsvCompanies: \n');
-  // console.log(csvCompanies);
-  // console.log(companyColumnLengths(csvCompanies));
+
   var maxCs = companyColumnLengths(csvCompanies);
   var cTable = makeTable(csvCompanies, maxCs, 'companies');
 
@@ -49,6 +45,8 @@ fs.readFile('./data/companies.csv', 'utf8', function(err, data) {
 });
 
 function makeTable(objArr, maxes, id) {
+  // generate table from objArray
+
   var headers = [];
   var output = '';
 
@@ -99,6 +97,8 @@ function makeTable(objArr, maxes, id) {
 
 function peopleColumnLengths(objArr) {
   // assumes all obj's in objArr have identical structure
+  // return max column lengths for each column
+
   var firstLength = objArr[0].firstName.length;
   var lastLength = objArr[0].lastName.length;
   var addressLength = objArr[0].address.length;
@@ -118,6 +118,9 @@ function peopleColumnLengths(objArr) {
 }
 
 function companyColumnLengths(objArr) {
+  // assumes all obj's have identical structure
+  // return max columns from a collection of Company obj's
+
   var nameLength = objArr[0].name.length;
   var suffixLength = objArr[0].suffix.length;
   var sloganLength = objArr[0].slogan.length;
@@ -140,6 +143,7 @@ function companyColumnLengths(objArr) {
   return [nameLength+1, suffixLength+1, sloganLength+1, dunsLength+1];
 }
 
+// Person class
 function Person(arr) {
   this.firstName = arr[0];
   this.lastName = arr[1];
@@ -148,8 +152,9 @@ function Person(arr) {
 
 Person.prototype.writeLine = function(maxes) {
   // write a table row from the data in a Person obj
-  output = "";
-  data = [this.firstName, this.lastName, this.address];
+
+  var output = "";
+  var data = [this.firstName, this.lastName, this.address];
 
   for (var i = 0; i < maxes.length; i++) {
     var numSpaces = maxes[i] - data[i].length;
@@ -168,6 +173,7 @@ Person.prototype.writeLine = function(maxes) {
   return output;
 };
 
+// Company class
 function Company(arr) {
   this.name = arr[0];
   this.suffix = arr[1];
@@ -177,8 +183,9 @@ function Company(arr) {
 
 Company.prototype.writeLine = function(maxes) {
   // write a table row from the data in a Company obj
-  output = "";
-  data = [this.name, this.suffix, this.slogan, this.duns];
+
+  var output = "";
+  var data = [this.name, this.suffix, this.slogan, this.duns];
 
   for (var i = 0; i < maxes.length; i++) {
     var numSpaces = maxes[i]- data[i].length;
